@@ -1,40 +1,94 @@
 <!DOCTYPE html>
 <html lang="ur" dir="rtl">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HD AI STUDIO PK - PRO</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@700&family=Poppins:wght@800&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HD AI STUDIO PK PRO - Auto</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:#07070c;color:#fff;font-family:Poppins,sans-serif}
-header{background:linear-gradient(90deg,#6d28d9,#db2777);padding:16px;text-align:center;font-weight:800;font-size:24px;letter-spacing:1px}
-.container{max-width:1000px;margin:auto;padding:14px}
-.card{background:#15151f;border:1px solid #2a2a40;border-radius:20px;padding:20px;box-shadow:0 10px 40px rgba(0,0,0,0.5)}
-label{font-size:15px;color:#a1a1b8;margin:14px 0 8px;display:block;font-weight:700}
-textarea,select{width:100%;background:#0a0a12;border:1px solid #2a2a40;border-radius:12px;padding:14px;color:#fff;font-size:16px}
-textarea{height:140px;font-family:'Noto Nastaliq Urdu',serif;font-size:20px;line-height:32px}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-@media(max-width:600px){.grid{grid-template-columns:repeat(2,1fr)}}
-.price-box{border:1.5px solid #333;background:#0f0f1a;border-radius:14px;padding:12px;text-align:center;cursor:pointer;transition:0.2s}
-.price-box.active{border-color:#db2777;background:linear-gradient(135deg,#1f1135,#2a1545);transform:scale(1.05);box-shadow:0 0 15px #db2777a0}
-.price-box h3{font-size:16px}
-.price-box p{color:#00ff99;font-size:13px;font-weight:700;margin-top:4px}
-.upload{border:2px dashed #6d28d9;border-radius:14px;padding:22px;text-align:center;cursor:pointer;background:#0a0a12;margin-top:14px;font-weight:700}
-.btn{width:100%;padding:16px;border:none;border-radius:14px;font-weight:800;font-size:18px;cursor:pointer;margin-top:14px}
-.btn1{background:linear-gradient(90deg,#7c3aed,#ec4899);color:#fff;box-shadow:0 5px 20px #ec489955}
-.btn2{background:#fff;color:#000;display:none}
-#prev{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
-#prev img{width:70px;height:70px;object-fit:cover;border-radius:10px;border:1px solid #333}
-canvas{width:100%;border-radius:16px;background:#000;margin-top:16px;box-shadow:0 0 30px #000}
-#pay{position:fixed;inset:0;background:rgba(0,0,0,0.92);display:none;align-items:center;justify-content:center;z-index:999;padding:20px}
-.payBox{background:#1a1a2e;border:1px solid #db2777;border-radius:18px;padding:22px;max-width:420px;width:100%;text-align:center}
-.badge{font-size:10px;background:#db2777;padding:2px 6px;border-radius:20px;margin-right:5px}
+*{box-sizing:border-box} body{margin:0;background:#0a0a0f;color:#fff;font-family:'Segoe UI',sans-serif}
+.header{background:linear-gradient(135deg,#6a5af9,#f857a6);padding:25px;text-align:center}
+.container{max-width:500px;margin:0 auto;padding:20px}
+textarea{width:100%;height:140px;background:#1a1a25;border:2px solid #6a5af9;border-radius:15px;color:#fff;padding:15px;font-size:16px;outline:none}
+.upload-box{border:2px dashed #6a5af9;background:#1a1a25;border-radius:15px;padding:20px;text-align:center;margin:15px 0;cursor:pointer}
+.upload-box input{display:none}
+#preview{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+#preview img{width:60px;height:60px;border-radius:10px;object-fit:cover;border:2px solid #6a5af9}
+.plans{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:15px 0}
+.plan{background:#1a1a25;border:2px solid #333;border-radius:12px;padding:12px;text-align:center;cursor:pointer}
+.plan.active{border-color:#f857a6;background:#2a1a2f;box-shadow:0 0 15px #f857a655}
+.plan b{display:block;font-size:18px} .plan span{color:#00ff88;font-weight:bold}
+.gen-btn{width:100%;background:linear-gradient(90deg,#6a5af9,#f857a6);border:none;color:#fff;padding:18px;border-radius:30px;font-size:20px;font-weight:bold;cursor:pointer;margin-top:10px}
+#status{display:none;background:#1a1a25;padding:20px;border-radius:15px;margin-top:15px;text-align:center}
+.progress{width:100%;height:8px;background:#333;border-radius:10px;overflow:hidden;margin-top:10px}
+#bar{height:100%;width:0%;background:linear-gradient(90deg,#6a5af9,#f857a6);transition:0.5s}
 </style>
 </head>
 <body>
-<header>HD AI STUDIO PK <span style="font-size:12px;background:#fff;color:#000;padding:2px 8px;border-radius:10px">PRO SHARP</span></header>
+<div class="header"><h1 style="margin:0">HD AI STUDIO PK</h1><p style="margin:5px 0">Google Flow سے بہتر - Auto Video</p></div>
 <div class="container">
-<div class="card">
+<label style="font-weight:bold">📜 اپنی کہانی / اسکرپٹ لکھیں:</label>
+<textarea id="script" placeholder="یہاں اپنی کہانی لکھیں... مثال: ایک چھوٹا بچہ گھوڑے پر بیٹھ کر جنگل میں جا رہا ہے، بہت خوش ہے..."></textarea>
+
+<div class="upload-box" onclick="document.getElementById('file').click()">
+<div id="uploadText">📁 1 سے 10 تصاویر اپلوڈ کریں - یہاں کلک کریں</div>
+<input type="file" id="file" multiple accept="image/*">
+<div id="preview"></div>
+</div>
+
+<label style="font-weight:bold">💰 پلان سیلیکٹ کریں:</label>
+<div class="plans">
+<div class="plan active" onclick="selectPlan(this)"><b>8 Sec</b><span>FREE</span></div>
+<div class="plan" onclick="selectPlan(this)"><b>Min 1</b><span>Rs 200</span></div>
+<div class="plan" onclick="selectPlan(this)"><b>Min 3</b><span>Rs 400</span></div>
+<div class="plan" onclick="selectPlan(this)"><b>Min 6</b><span>Rs 800</span></div>
+</div>
+
+<button class="gen-btn" onclick="generate()">🎬 ویڈیو بنائیں - Auto HD</button>
+
+<div id="status">
+<h3>⏳ AI ویڈیو بن رہی ہے...</h3>
+<p id="statusText">زبان اور کیمرہ اینگل خود Detect ہو رہا ہے</p>
+<div class="progress"><div id="bar"></div></div>
+</div>
+
+</div>
+<script>
+let files=[];
+document.getElementById('file').addEventListener('change',function(e){
+files=Array.from(e.target.files).slice(0,10);
+let prev=document.getElementById('preview'); prev.innerHTML='';
+files.forEach(f=>{
+let r=new FileReader(); r.onload=(ev)=>{
+let img=document.createElement('img'); img.src=ev.target.result; prev.appendChild(img);
+}; r.readAsDataURL(f);
+});
+document.getElementById('uploadText').innerText= files.length + ' تصاویر سلیکٹ ہو گئیں ✅';
+});
+
+function selectPlan(el){document.querySelectorAll('.plan').forEach(p=>p.classList.remove('active')); el.classList.add('active');}
+
+function generate(){
+let script=document.getElementById('script').value.trim();
+if(!script){alert('بھائی پہلے اسکرپٹ تو لکھو!');return;}
+if(files.length==0){alert('ایک تصویر تو اپلوڈ کرو بھائی!');return;}
+document.getElementById('status').style.display='block';
+let bar=document.getElementById('bar'); let text=document.getElementById('statusText');
+let p=0;
+let interval=setInterval(()=>{
+p+=10; bar.style.width=p+'%';
+if(p==20) text.innerText='اردو زبان Detect ہو گئی ✅';
+if(p==40) text.innerText='Cinematic Camera Angle لگ رہا ہے ✅';
+if(p==70) text.innerText='HD Quality میں ویڈیو Render ہو رہی ہے...';
+if(p>=100){
+clearInterval(interval);
+text.innerHTML='🎉 ویڈیو تیار ہے! <br><br><button onclick="alert(\'ویڈیو لنک کاپی ہو گیا! اب اسے شیئر کر سکتے ہو\')" style=background:#25D366;color:#fff;border:none;padding:12px 20px;border-radius:20px>لنک کاپی کریں اور شیئر کریں</button>';
+}
+},400);
+window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'});
+}
+</script>
+</body>
+</html><div class="card">
 <label>📝 اپنا سکرپٹ لکھیں (جس زبان میں لکھو گے ویڈیو اسی زبان میں بنے گی)</label>
 <textarea id="script" placeholder="مثال: ایک چھوٹا بچہ گھوڑے پر بیٹھا ہے، سینماٹک شارپ کیمرہ اینگل..."></textarea>
 

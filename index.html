@@ -1,31 +1,18 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><title>HD AI STUDIO</title><style>body{background:#000;color:#fff;text-align:center;padding:20px;font-family:sans-serif}.box{background:#111;border:1px solid #333;border-radius:12px;padding:12px;margin:12px auto;max-width:500px}button{width:100%;padding:14px;border-radius:10px;border:none;font-weight:bold;font-size:18px}input{width:100%;padding:12px;border-radius:10px;border:none}#v{width:100%;max-width:500px;margin-top:20px;border-radius:12px;display:none}#s{margin-top:15px;color:#0f0}</style></head><body><h1>HD AI STUDIO FREE</h1><div class="box"><input type="file" id="i" accept="image/*"></div><div class="box"><input type="text" id="p" value="hug karta hai, hansta hai"></div><div class="box"><button id="b">Video Banao</button><div id="s">Ready</div></div><video id="v" controls autoplay loop></video><script>
+<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><title>HD AI STUDIO</title><style>body{background:#000;color:#fff;text-align:center;padding:20px;font-family:sans-serif}.box{background:#111;border:1px solid #333;border-radius:12px;padding:12px;margin:12px auto;max-width:500px}button{width:100%;padding:14px;border-radius:10px;border:none;font-weight:bold;font-size:18px;background:#fff}input{width:100%;padding:12px;border-radius:10px;border:none}#v{width:100%;max-width:500px;margin-top:20px;border-radius:12px;display:none}#s{margin-top:15px;color:#0f0}</style></head><body><h1>HD AI STUDIO FREE</h1><div class="box"><input type="file" id="i" accept="image/*"><div style="color:#888;font-size:12px;margin-top:5px">Tasveer optional hai, text se bhi video banegi</div></div><div class="box"><input type="text" id="p" value="hug karta hai, hansta hai"></div><div class="box"><button id="b">Video Banao</button><div id="s">Ready - Naya tez model active hai</div></div><video id="v" controls autoplay loop></video><script>
 const TOKEN="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";
-let fileData;
-document.getElementById('i').onchange=e=>{fileData=e.target.files[0];document.getElementById('s').innerText="Tasveer select ho gai ✅"};
+const MODEL2="damo-vilab/modelscope-text-to-video-synthesis";
 document.getElementById('b').onclick=async()=>{
- if(!fileData){alert("Tasveer select karo");return;}
+ const prompt=document.getElementById('p').value || "hug karta hai";
  const s=document.getElementById('s'),v=document.getElementById('v'),b=document.getElementById('b');
- b.disabled=true; s.innerText="Ban rahi hai... 1 se 3 min lagega, please wait..."; v.style.display="none";
- for(let attempt=1; attempt<=4; attempt++){
-  try{
-   s.innerText=`Koshish ${attempt}/4... Model jag raha hai...`;
-   const r=await fetch("https://api-inference.huggingface.co/models/stabilityai/stable-video-diffusion-img2vid-xt",{
-    method:"POST", headers:{"Authorization":"Bearer "+TOKEN}, body:fileData
-   });
-   const txt=await r.clone().text();
-   if(!r.ok){
-     if(r.status===503 || txt.includes("loading")){
-       s.innerText=`Model loading hai... 30 sec baad phir try kar raha hun... (${attempt}/4)`;
-       await new Promise(x=>setTimeout(x,30000)); continue;
-     } else {
-       s.innerText="HF Error: "+txt.slice(0,400); b.disabled=false; return;
-     }
-   }
-   const blob=await r.blob(); v.src=URL.createObjectURL(blob); v.style.display="block";
-   s.innerText="✅ Video ban gai! Neeche dekho, download kar lo"; b.disabled=false; return;
-  }catch(e){ s.innerText="Network Error: "+e.message; }
- }
- s.innerText="❌ 4 dafa try kiya, model abhi busy hai. 5 min baad phir Video Banao dabao.";
- b.disabled=false;
+ b.disabled=true; s.innerText="Tez model se bana raha hun... 30-60 sec lagega..."; v.style.display="none";
+ try{
+  const r=await fetch(`https://api-inference.huggingface.co/models/${MODEL2}`,{
+   method:"POST", headers:{"Authorization":"Bearer "+TOKEN, "Content-Type":"application/json"},
+   body:JSON.stringify({"inputs":prompt})
+  });
+  if(!r.ok){const t=await r.text(); s.innerText="Error: "+t.slice(0,400); b.disabled=false; return;}
+  const blob=await r.blob(); v.src=URL.createObjectURL(blob); v.style.display="block";
+  s.innerText="✅ Video ban gai! Neeche dekho"; b.disabled=false;
+ }catch(e){ s.innerText="Error: "+e.message; b.disabled=false; }
 }
 </script></body></html>

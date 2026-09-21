@@ -1,1 +1,31 @@
-<!DOCTYPE html><html dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>HD AI STUDIO</title><style>body{background:#000;color:#fff;text-align:center;padding:15px}textarea,input{width:95%;padding:12px;background:#111;color:#fff;border-radius:8px;margin:8px}.btn{background:#fff;color:#000;padding:14px;width:95%;border-radius:10px;font-weight:bold}</style></head><body><h2>HD AI STUDIO FREE</h2><input type="file" id="img"><textarea id="prompt" placeholder="Prompt likho"></textarea><button class="btn" onclick="generate()">Video Banao</button><div id="log">Ready</div><video id="vid" controls style="width:95%;display:none"></video><a id="dl" download style="display:none"><button class="btn">Download</button></a><script>const HF_TOKEN="hf_APNA_TOKEN_YAHAN_DALO";let imgBase64="";document.getElementById('img').onchange=e=>{let r=new FileReader();r.onload=()=>{imgBase64=r.result.split(',')[1];log.innerText="Image ok"};r.readAsDataURL(e.target.files[0])};async function generate(){if(!imgBase64)return alert("Image select karo");log.innerText="Ban rahi hai 1 min...";let res=await fetch("https://api-inference.huggingface.co/models/stabilityai/stable-video-diffusion-img2vid-xt",{method:"POST",headers:{Authorization:"Bearer "+HF_TOKEN},body:JSON.stringify({inputs:imgBase64})});let blob=await res.blob();let url=URL.createObjectURL(blob);vid.src=url;vid.style.display="block";dl.href=url;dl.style.display="block";log.innerText="Ho gayi!"}</script></body></html>
+<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><title>HD AI STUDIO</title><style>body{background:#000;color:#fff;text-align:center;padding:20px;font-family:sans-serif}.box{background:#111;border:1px solid #333;border-radius:12px;padding:12px;margin:12px auto;max-width:500px}button{width:100%;padding:14px;border-radius:10px;border:none;font-weight:bold;font-size:18px}input{width:100%;padding:12px;border-radius:10px;border:none}#v{width:100%;max-width:500px;margin-top:20px;border-radius:12px;display:none}#s{margin-top:15px;color:#0f0}</style></head><body><h1>HD AI STUDIO FREE</h1><div class="box"><input type="file" id="i" accept="image/*"></div><div class="box"><input type="text" id="p" value="hug karta hai, hansta hai"></div><div class="box"><button id="b">Video Banao</button><div id="s">Ready</div></div><video id="v" controls autoplay loop></video><script>
+const TOKEN="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";
+let fileData;
+document.getElementById('i').onchange=e=>{fileData=e.target.files[0];document.getElementById('s').innerText="Tasveer select ho gai ✅"};
+document.getElementById('b').onclick=async()=>{
+ if(!fileData){alert("Tasveer select karo");return;}
+ const s=document.getElementById('s'),v=document.getElementById('v'),b=document.getElementById('b');
+ b.disabled=true; s.innerText="Ban rahi hai... 1 se 3 min lagega, please wait..."; v.style.display="none";
+ for(let attempt=1; attempt<=4; attempt++){
+  try{
+   s.innerText=`Koshish ${attempt}/4... Model jag raha hai...`;
+   const r=await fetch("https://api-inference.huggingface.co/models/stabilityai/stable-video-diffusion-img2vid-xt",{
+    method:"POST", headers:{"Authorization":"Bearer "+TOKEN}, body:fileData
+   });
+   const txt=await r.clone().text();
+   if(!r.ok){
+     if(r.status===503 || txt.includes("loading")){
+       s.innerText=`Model loading hai... 30 sec baad phir try kar raha hun... (${attempt}/4)`;
+       await new Promise(x=>setTimeout(x,30000)); continue;
+     } else {
+       s.innerText="HF Error: "+txt.slice(0,400); b.disabled=false; return;
+     }
+   }
+   const blob=await r.blob(); v.src=URL.createObjectURL(blob); v.style.display="block";
+   s.innerText="✅ Video ban gai! Neeche dekho, download kar lo"; b.disabled=false; return;
+  }catch(e){ s.innerText="Network Error: "+e.message; }
+ }
+ s.innerText="❌ 4 dafa try kiya, model abhi busy hai. 5 min baad phir Video Banao dabao.";
+ b.disabled=false;
+}
+</script></body></html>

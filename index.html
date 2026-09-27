@@ -1,18 +1,37 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><title>HD AI STUDIO</title><style>body{background:#000;color:#fff;text-align:center;padding:20px;font-family:sans-serif}.box{background:#111;border:1px solid #333;border-radius:12px;padding:12px;margin:12px auto;max-width:500px}button{width:100%;padding:14px;border-radius:10px;border:none;font-weight:bold;font-size:18px;background:#fff}input{width:100%;padding:12px;border-radius:10px;border:none}#v{width:100%;max-width:500px;margin-top:20px;border-radius:12px;display:none}#s{margin-top:15px;color:#0f0}</style></head><body><h1>HD AI STUDIO FREE</h1><div class="box"><input type="file" id="i" accept="image/*"><div style="color:#888;font-size:12px;margin-top:5px">Tasveer optional hai, text se bhi video banegi</div></div><div class="box"><input type="text" id="p" value="hug karta hai, hansta hai"></div><div class="box"><button id="b">Video Banao</button><div id="s">Ready - Naya tez model active hai</div></div><video id="v" controls autoplay loop></video><script>
-const TOKEN="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";
-const MODEL2="damo-vilab/modelscope-text-to-video-synthesis";
-document.getElementById('b').onclick=async()=>{
- const prompt=document.getElementById('p').value || "hug karta hai";
- const s=document.getElementById('s'),v=document.getElementById('v'),b=document.getElementById('b');
- b.disabled=true; s.innerText="Tez model se bana raha hun... 30-60 sec lagega..."; v.style.display="none";
- try{
-  const r=await fetch(`https://api-inference.huggingface.co/models/${MODEL2}`,{
-   method:"POST", headers:{"Authorization":"Bearer "+TOKEN, "Content-Type":"application/json"},
-   body:JSON.stringify({"inputs":prompt})
-  });
-  if(!r.ok){const t=await r.text(); s.innerText="Error: "+t.slice(0,400); b.disabled=false; return;}
-  const blob=await r.blob(); v.src=URL.createObjectURL(blob); v.style.display="block";
-  s.innerText="✅ Video ban gai! Neeche dekho"; b.disabled=false;
- }catch(e){ s.innerText="Error: "+e.message; b.disabled=false; }
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HD-AI-STUDIO-PK - Real AI Video</title>
+<style>
+body{background:#0a0a0a;color:#fff;font-family:Arial;text-align:center;padding:20px}
+h1{color:#FFD700}
+input{width:90%;max-width:500px;padding:15px;border-radius:10px;border:2px solid #FFD700;background:#1a1a1a;color:#fff}
+button{background:#FFD700;color:#000;padding:15px 30px;border:none;border-radius:10px;font-weight:bold;margin:10px;cursor:pointer}
+video{max-width:90%;margin-top:20px;border-radius:15px;border:2px solid #FFD700}
+</style>
+</head>
+<body>
+<h1>HD-AI-STUDIO-PK</h1>
+<p>Real AI Video Generator - 8 Second</p>
+<input id="apikey" placeholder="Apni Pollinations API Key yahan paste karo">
+<br><br>
+<input id="prompt" placeholder="Video ke liye likho... jaise: horse running in desert">
+<br>
+<button onclick="generateVideo()">Real Video Banao</button>
+<p id="status"></p>
+<video id="result" controls style="display:none" loop></video>
+<script>
+async function generateVideo(){
+let key=document.getElementById('apikey').value;
+let p=document.getElementById('prompt').value;
+if(!key){alert('Pehle API Key dalo');return;}
+document.getElementById('status').innerText='Video ban rahi hai... 30 sec rukho';
+let url=`https://gen.pollinations.ai/video/${encodeURIComponent(p)}?model=veo&key=${key}`;
+document.getElementById('result').src=url;
+document.getElementById('result').style.display='block';
+document.getElementById('result').onloadeddata=()=>{document.getElementById('status').innerText='Ho gaya!';}
 }
-</script></body></html>
+</script>
+</body>
+</html>

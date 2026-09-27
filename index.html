@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>HD-AI-STUDIO-PK</title>
-<style>body{background:#000;color:#fff;text-align:center;font-family:Arial;padding:20px}h1{color:#FFD700}input{width:90%;padding:12px;margin:10px;border-radius:10px;border:2px solid #FFD700;background:#111;color:#fff}button{background:#FFD700;padding:14px 30px;border:none;border-radius:10px;font-weight:bold;font-size:16px}video{width:90%;margin-top:20px;border-radius:10px}</style>
+<style>body{background:#000;color:#fff;text-align:center;font-family:Arial;padding:20px}h1{color:#FFD700}input{width:90%;padding:12px;margin:10px;border-radius:10px;border:2px solid #FFD700;background:#111;color:#fff}button{background:#FFD700;padding:14px 30px;border:none;border-radius:10px;font-weight:bold}video{width:90%;margin-top:20px}#msg{color:#ff9999;margin:15px;white-space:pre-wrap}</style>
 </head><body>
 <h1>HD-AI-STUDIO-PK</h1>
-<p>Real AI Video Generator</p>
-<input id="key" placeholder="API Key paste karo">
-<input id="prompt" placeholder="horse running in desert">
+<input id="key" placeholder="Nayi API Key paste karo">
+<input id="prompt" value="horse running in desert">
 <br><button onclick="make()">Real Video Banao</button>
 <p id="msg"></p>
 <video id="v" controls style="display:none"></video>
@@ -14,11 +13,15 @@
 async function make(){
 let k=document.getElementById('key').value.trim();
 let p=document.getElementById('prompt').value.trim();
-if(!k||!p){alert('Key aur prompt likho');return;}
-document.getElementById('msg').innerText='Video ban rahi hai 30 sec ruko...';
-let url='https://gen.pollinations.ai/video/'+encodeURIComponent(p)+'?key='+encodeURIComponent(k)+'&duration=5&aspectRatio=16:9';
-document.getElementById('v').style.display='block';
-document.getElementById('v').src=url;
-document.getElementById('msg').innerText='Agar video na chale to key check karo';
+let msg=document.getElementById('msg');
+msg.innerText='Check kar raha hun...';
+let url='https://gen.pollinations.ai/video/'+encodeURIComponent(p)+'?key='+encodeURIComponent(k);
+try{
+let r=await fetch(url);
+let t=await r.text();
+if(!r.ok){ msg.innerText='ERROR: '+r.status+'\n'+t.slice(0,500); return; }
+msg.innerText='Video mil gayi, play kar raha hun...';
+let v=document.getElementById('v'); v.style.display='block'; v.src=url;
+}catch(e){ msg.innerText='ERROR: '+e.message; }
 }
 </script></body></html>

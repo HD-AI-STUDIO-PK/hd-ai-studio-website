@@ -1,37 +1,24 @@
 <!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HD-AI-STUDIO-PK - Real AI Video</title>
-<style>
-body{background:#0a0a0a;color:#fff;font-family:Arial;text-align:center;padding:20px}
-h1{color:#FFD700}
-input{width:90%;max-width:500px;padding:15px;border-radius:10px;border:2px solid #FFD700;background:#1a1a1a;color:#fff}
-button{background:#FFD700;color:#000;padding:15px 30px;border:none;border-radius:10px;font-weight:bold;margin:10px;cursor:pointer}
-video{max-width:90%;margin-top:20px;border-radius:15px;border:2px solid #FFD700}
-</style>
-</head>
-<body>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HD-AI-STUDIO-PK</title>
+<style>body{background:#000;color:#fff;text-align:center;font-family:Arial;padding:20px}h1{color:#FFD700}input{width:90%;padding:12px;margin:10px;border-radius:10px;border:2px solid #FFD700;background:#111;color:#fff}button{background:#FFD700;padding:14px 30px;border:none;border-radius:10px;font-weight:bold;font-size:16px}video{width:90%;margin-top:20px;border-radius:10px}</style>
+</head><body>
 <h1>HD-AI-STUDIO-PK</h1>
-<p>Real AI Video Generator - 8 Second</p>
-<input id="apikey" placeholder="Apni Pollinations API Key yahan paste karo">
-<br><br>
-<input id="prompt" placeholder="Video ke liye likho... jaise: horse running in desert">
-<br>
-<button onclick="generateVideo()">Real Video Banao</button>
-<p id="status"></p>
-<video id="result" controls style="display:none" loop></video>
+<p>Real AI Video Generator</p>
+<input id="key" placeholder="API Key paste karo">
+<input id="prompt" placeholder="horse running in desert">
+<br><button onclick="make()">Real Video Banao</button>
+<p id="msg"></p>
+<video id="v" controls style="display:none"></video>
 <script>
-async function generateVideo(){
-let key=document.getElementById('apikey').value;
-let p=document.getElementById('prompt').value;
-if(!key){alert('Pehle API Key dalo');return;}
-document.getElementById('status').innerText='Video ban rahi hai... 30 sec rukho';
-let url=`https://gen.pollinations.ai/video/${encodeURIComponent(p)}?model=veo&key=${key}`;
-document.getElementById('result').src=url;
-document.getElementById('result').style.display='block';
-document.getElementById('result').onloadeddata=()=>{document.getElementById('status').innerText='Ho gaya!';}
+async function make(){
+let k=document.getElementById('key').value.trim();
+let p=document.getElementById('prompt').value.trim();
+if(!k||!p){alert('Key aur prompt likho');return;}
+document.getElementById('msg').innerText='Video ban rahi hai 30 sec ruko...';
+let url='https://gen.pollinations.ai/video/'+encodeURIComponent(p)+'?key='+encodeURIComponent(k)+'&duration=5&aspectRatio=16:9';
+document.getElementById('v').style.display='block';
+document.getElementById('v').src=url;
+document.getElementById('msg').innerText='Agar video na chale to key check karo';
 }
-</script>
-</body>
-</html>
+</script></body></html>

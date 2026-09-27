@@ -1,27 +1,32 @@
 <!DOCTYPE html>
 <html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>HD-AI-STUDIO-PK</title>
-<style>body{background:#000;color:#fff;text-align:center;font-family:Arial;padding:20px}h1{color:#FFD700}input{width:90%;padding:12px;margin:10px;border-radius:10px;border:2px solid #FFD700;background:#111;color:#fff}button{background:#FFD700;padding:14px 30px;border:none;border-radius:10px;font-weight:bold}video{width:90%;margin-top:20px}#msg{color:#ff9999;margin:15px;white-space:pre-wrap}</style>
+<style>body{background:#000;color:#fff;text-align:center;font-family:Arial;padding:20px}h1{color:#FFD700}input{width:90%;padding:12px;margin:8px;border-radius:10px;border:2px solid #FFD700;background:#111;color:#fff}button{background:#FFD700;padding:14px 30px;border:none;border-radius:10px;font-weight:bold;font-size:16px;margin-top:10px}video{width:95%;margin-top:20px;border-radius:10px;background:#222}a{color:#FFD700;display:block;margin-top:15px}</style>
 </head><body>
 <h1>HD-AI-STUDIO-PK</h1>
-<input id="key" placeholder="Nayi API Key paste karo">
-<input id="prompt" value="horse running in desert">
+<p>Real AI Video Generator</p>
+<input id="key" placeholder="API Key yahan paste karo">
+<input id="prompt" placeholder="horse running in desert" value="horse running in desert">
 <br><button onclick="make()">Real Video Banao</button>
-<p id="msg"></p>
-<video id="v" controls style="display:none"></video>
+<p id="msg" style="color:#ccc"></p>
+<video id="v" controls playsinline style="display:none"></video>
+<a id="dl" style="display:none" target="_blank">Video Download Karo</a>
 <script>
-async function make(){
+function make(){
 let k=document.getElementById('key').value.trim();
-let p=document.getElementById('prompt').value.trim();
-let msg=document.getElementById('msg');
-msg.innerText='Check kar raha hun...';
-let url='https://gen.pollinations.ai/video/'+encodeURIComponent(p)+'?key='+encodeURIComponent(k);
-try{
-let r=await fetch(url);
-let t=await r.text();
-if(!r.ok){ msg.innerText='ERROR: '+r.status+'\n'+t.slice(0,500); return; }
-msg.innerText='Video mil gayi, play kar raha hun...';
-let v=document.getElementById('v'); v.style.display='block'; v.src=url;
-}catch(e){ msg.innerText='ERROR: '+e.message; }
+let p=document.getElementById('prompt').value.trim()||'horse running in desert';
+if(!k){alert('Pehle API Key paste karo');return;}
+document.getElementById('msg').innerText='Video ban rahi hai, 40 second wait karo...';
+let url='https://gen.pollinations.ai/video/'+encodeURIComponent(p)+'?key='+encodeURIComponent(k)+'&duration=5';
+let v=document.getElementById('v');
+v.style.display='block';
+v.src=url;
+v.load();
+v.play().catch(()=>{});
+let dl=document.getElementById('dl');
+dl.style.display='block';
+dl.href=url;
+dl.innerText='Agar video na chale to yahan tap karke kholo';
+document.getElementById('msg').innerText='Neeche video load hogi, thora wait karo';
 }
 </script></body></html>
